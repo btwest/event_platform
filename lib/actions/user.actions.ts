@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { connectToDatabase } from "@/lib/database";
-import User from "@/lib/database/models/user.model";
+import { User } from "@/lib/database/models/user.model"; // Change to named import
 import Order from "@/lib/database/models/order.model";
 import Event from "@/lib/database/models/event.model";
 import { handleError } from "@/lib/utils";
@@ -18,9 +18,10 @@ export async function createUser(user: CreateUserParams) {
     return JSON.parse(JSON.stringify(newUser));
   } catch (error) {
     handleError(error);
+    console.error("Create user error:", error);
+    throw error; // Optional: rethrow for better error handling
   }
 }
-
 export async function getUserById(userId: string) {
   try {
     await connectToDatabase();
